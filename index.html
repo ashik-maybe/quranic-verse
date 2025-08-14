@@ -33,7 +33,10 @@
 
                     <!-- Audio Player Section -->
                     <div class="audio-section">
-                        <h3 class="audio-title">Recitation</h3>
+                        <div class="audio-header">
+                            <h3 class="audio-title">Recitation</h3>
+                            <p id="reciter-name" class="reciter-name">Mishary Rashid Alafasy</p>
+                        </div>
                         <div class="custom-audio-player">
                             <!-- Hidden native audio element -->
                             <audio id="recitation-audio"></audio>
@@ -79,6 +82,11 @@
                 </div>
             </div>
         </main>
+        <!-- Minimal Credit -->
+        <div class="credit">
+            Made with <i id="heart-icon" class="fas fa-heart"></i> by
+            <a id="creator-link" href="https://github.com/ashik-maybe" target="_blank" rel="noopener noreferrer">ashik</a>
+        </div>
     </div>
     <script type="module" src="src/main.js"></script>
 </body>

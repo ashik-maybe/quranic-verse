@@ -1,3 +1,4 @@
+// API used: https://alquran.cloud/api#collapseFive
 // --- Configuration ---
 const API_BASE = 'https://api.alquran.cloud/v1/ayah'; // Ensure HTTPS
 const TOTAL_VERSES = 6236;
@@ -24,15 +25,27 @@ const progressBar = document.getElementById('progress-bar');
 const currentTimeEl = document.getElementById('current-time');
 const durationEl = document.getElementById('duration');
 const volumeSlider = document.getElementById('volume-slider');
+const reciterNameEl = document.getElementById('reciter-name'); // Reciter name element
 
 // --- Theme Management (Persisted) ---
 let currentTheme = localStorage.getItem('quran-app-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 document.documentElement.setAttribute('data-theme', currentTheme);
 updateThemeIcon();
+updateHeartIconColor(); // Set initial heart color
 
 function updateThemeIcon() {
     if (themeIcon) {
         themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+// Function to update the heart icon color based on theme
+function updateHeartIconColor() {
+    const heartIcon = document.getElementById('heart-icon');
+    if (heartIcon) {
+        // Use inline style to override CSS default color
+        // White heart for dark theme, Red heart for light theme
+        heartIcon.style.color = currentTheme === 'dark' ? '#ffffff' : '#e74c3c';
     }
 }
 
@@ -41,6 +54,7 @@ themeToggleBtn.addEventListener('click', () => {
     document.documentElement.setAttribute('data-theme', currentTheme);
     localStorage.setItem('quran-app-theme', currentTheme);
     updateThemeIcon();
+    updateHeartIconColor(); // Update heart color on theme toggle
 });
 
 // --- Audio Player Logic ---
@@ -76,12 +90,9 @@ playPauseBtn.addEventListener('click', () => {
     if (isPlaying) {
         recitationAudioEl.pause();
     } else {
-        // Ensure src is set before playing
         if (recitationAudioEl.src) {
             recitationAudioEl.play().catch(error => {
                  console.error("Audio play error:", error);
-                 // Handle play error (e.g., user gesture required)
-                 // Could show a message to user
             });
         }
     }
@@ -98,7 +109,6 @@ forwardBtn.addEventListener('click', () => {
 muteBtn.addEventListener('click', () => {
     recitationAudioEl.muted = !recitationAudioEl.muted;
     updateMuteIcon();
-    // Update slider if muted via button
     if (recitationAudioEl.muted) {
         volumeSlider.value = 0;
     } else {
@@ -131,7 +141,6 @@ recitationAudioEl.addEventListener('pause', () => {
 recitationAudioEl.addEventListener('ended', () => {
     isPlaying = false;
     updatePlayPauseIcon();
-    // Reset progress bar
     progressBar.value = 0;
     currentTimeEl.textContent = "0:00";
 });
@@ -151,13 +160,11 @@ recitationAudioEl.addEventListener('loadedmetadata', () => {
 });
 
 recitationAudioEl.addEventListener('volumechange', () => {
-    // Update slider and mute icon if volume changed externally (e.g., OS controls)
-    if (!volumeSlider.matches(':active')) { // Don't override user dragging slider
+    if (!volumeSlider.matches(':active')) {
         volumeSlider.value = recitationAudioEl.volume * 100;
     }
     updateMuteIcon();
 });
-
 
 // --- Data Fetching ---
 async function fetchRandomVerse() {
@@ -175,7 +182,8 @@ async function fetchRandomVerse() {
             const result = {
                 arabic: null,
                 english: null,
-                audio: null
+                audio: null,
+                reciter: null
             };
 
             data.data.forEach(verseObj => {
@@ -187,6 +195,11 @@ async function fetchRandomVerse() {
                         result.english = verseObj;
                     } else if (identifier === 'ar.alafasy') {
                         result.audio = verseObj;
+                        if (verseObj.edition?.englishName) {
+                            result.reciter = verseObj.edition.englishName;
+                        } else if (verseObj.edition?.name) {
+                            result.reciter = verseObj.edition.name;
+                        }
                     }
                 }
             });
@@ -207,7 +220,6 @@ async function fetchRandomVerse() {
 
 // --- Display Logic ---
 async function displayRandomVerse() {
-    // Add loading state
     verseArabicEl.classList.add('loading');
     translationEnEl.classList.add('loading');
     verseReferenceEl.classList.add('loading');
@@ -216,18 +228,18 @@ async function displayRandomVerse() {
     translationEnEl.textContent = "...";
     verseReferenceEl.textContent = "Loading...";
 
-    // Reset audio player UI
     recitationAudioEl.src = '';
     recitationAudioEl.load();
     isPlaying = false;
     updatePlayPauseIcon();
     progressBar.value = 0;
-    volumeSlider.value = 100; // Reset slider
+    volumeSlider.value = 100;
     recitationAudioEl.volume = 1.0;
     recitationAudioEl.muted = false;
     updateMuteIcon();
     currentTimeEl.textContent = "0:00";
     durationEl.textContent = "0:00";
+    reciterNameEl.textContent = "Loading...";
 
     const verseData = await fetchRandomVerse();
 
@@ -235,31 +247,34 @@ async function displayRandomVerse() {
         verseArabicEl.textContent = "تعذر تحميل الآية.";
         translationEnEl.textContent = "Failed to load English translation.";
         verseReferenceEl.textContent = "";
+        reciterNameEl.textContent = "";
         removeLoadingStates();
         return;
     }
 
-    // Populate the Arabic text
     verseArabicEl.textContent = verseData.arabic.text;
 
-    // Populate the English translation
     if (verseData.english?.text) {
         translationEnEl.textContent = verseData.english.text;
     } else {
         translationEnEl.textContent = "[English translation not available]";
     }
 
-    // Populate the Audio Player
     if (verseData.audio?.audio) {
         recitationAudioEl.src = verseData.audio.audio;
         recitationAudioEl.preload = 'metadata';
         recitationAudioEl.load();
-        // Duration will be updated on 'loadedmetadata' event
+
+        if (verseData.reciter) {
+            reciterNameEl.textContent = verseData.reciter;
+        } else {
+            reciterNameEl.textContent = "Mishary Rashid Alafasy";
+        }
     } else {
         console.warn("Audio URL not found for this verse.");
+        reciterNameEl.textContent = "";
     }
 
-    // Populate the reference
     const arabicData = verseData.arabic;
     const surahName = arabicData.surah?.englishName || `Surah ${arabicData.surah?.number || 'Unknown'}`;
     const ayahNumber = arabicData.numberInSurah;
