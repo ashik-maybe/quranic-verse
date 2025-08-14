@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayah</title>
-    <!-- Import Google Fonts -->
+    <!-- Google Fonts: Scheherazade New (Arabic), Inter (Latin), Hind Siliguri (Bengali) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Scheherazade+New:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="src/style.css">
@@ -15,14 +15,36 @@
 </head>
 <body>
     <div class="container">
-        <main class="main-content">
-            <div class="verse-display">
-                <p id="verse-arabic" class="verse-text arabic" lang="ar" dir="rtl" aria-live="polite">...</p>
-            </div>
-            <div class="verse-reference" id="verse-reference">Loading...</div>
-            <button id="new-verse-btn" class="btn-refresh" aria-label="Load a new verse">
-                <i class="fas fa-sync-alt"></i>
+        <header class="app-header">
+            <h1 class="app-title">Ayah</h1>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i> <!-- Icon will change via JS -->
             </button>
+        </header>
+        <main class="main-content">
+            <div class="card">
+                <div class="verse-section">
+                    <div class="verse-display">
+                        <p id="verse-arabic" class="verse-text arabic" lang="ar" dir="rtl" aria-live="polite">...</p>
+                    </div>
+                    <div class="verse-reference" id="verse-reference">Loading...</div>
+                </div>
+
+                <div class="translations-grid">
+                    <div class="translation english">
+                        <h3 class="translation-title">English</h3>
+                        <p id="translation-en" class="translation-text">...</p>
+                    </div>
+                    <div class="translation bengali">
+                        <h3 class="translation-title">বাংলা</h3>
+                        <p id="translation-bn" class="translation-text" lang="bn">...</p>
+                    </div>
+                </div>
+
+                <button id="new-verse-btn" class="btn-refresh" aria-label="Load a new verse">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
         </main>
     </div>
     <script type="module" src="src/main.js"></script>
