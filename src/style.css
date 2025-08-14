@@ -1,32 +1,32 @@
-/* CSS Variables for Theming - Inspired by modern UI principles */
+/* CSS Variables for Theming - Softer, more eye-friendly colors */
 :root {
-    /* Light Theme */
-    --bg-primary: #f8f9fa;
+    --bg-primary: #f5f7fa;
     --bg-card: #ffffff;
-    --text-primary: #212529;
-    --text-secondary: #6c757d;
-    --accent-primary: #495057;
-    --border-color: #dee2e6;
-    --shadow-color: rgba(0, 0, 0, 0.08);
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent-primary: #444444;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
     --button-bg: var(--bg-card);
-    --button-hover-bg: #e9ecef;
-    --glass-bg: rgba(255, 255, 255, 0.7); /* For glass effect */
-    --glass-border: rgba(255, 255, 255, 0.18);
+    --button-hover-bg: #f0f0f0;
+    --player-bg: rgba(0, 0, 0, 0.02);
+    --player-progress-bg: rgba(0, 0, 0, 0.1);
+    --player-progress-fill: #444444;
 }
 
 [data-theme="dark"] {
-    /* Dark Theme */
-    --bg-primary: #121212;
-    --bg-card: #1e1e1e;
-    --text-primary: #f8f9fa;
-    --text-secondary: #adb5bd;
-    --accent-primary: #e9ecef;
-    --border-color: #343a40;
-    --shadow-color: rgba(0, 0, 0, 0.3);
+    --bg-primary: #1a1a1a;
+    --bg-card: #242424;
+    --text-primary: #f0f0f0;
+    --text-secondary: #bbbbbb;
+    --accent-primary: #dddddd;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.25);
     --button-bg: var(--bg-card);
-    --button-hover-bg: #343a40;
-    --glass-bg: rgba(30, 30, 30, 0.7); /* For glass effect */
-    --glass-border: rgba(255, 255, 255, 0.05);
+    --button-hover-bg: #333333;
+    --player-bg: rgba(255, 255, 255, 0.02);
+    --player-progress-bg: rgba(255, 255, 255, 0.1);
+    --player-progress-fill: #dddddd;
 }
 
 /* Base Styles */
@@ -36,121 +36,81 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-    font-family: 'Inter', sans-serif; /* Default font for body */
-}
-
-body {
+html {
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     transition: background-color 0.4s ease, color 0.4s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
+    height: 100%; /* Ensure html takes full height */
+}
+
+/* --- Perfect Centering using Grid --- */
+body {
+    /* Use grid to center the container */
+    display: grid;
+    place-items: center;
+    min-height: 100%; /* At least full viewport height */
+    padding: 20px; /* Consistent padding */
+    /* Allow scrolling if content is taller than viewport */
+    overflow: auto;
+    /* Background is set on html, body just needs to be transparent */
+    background-color: transparent;
 }
 
 .container {
     width: 100%;
     max-width: 900px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    /* No need for height or flex on container anymore */
 }
 
-/* Header */
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5px;
-    margin-bottom: 10px;
-}
-
-.app-title {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--text-primary);
-}
-
-.theme-toggle {
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-secondary);
-    background-color: var(--button-bg);
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.theme-toggle:hover {
-    background-color: var(--button-hover-bg);
-    color: var(--text-primary);
-    transform: translateY(-1px);
-}
-
-/* Main Content & Card */
+/* Main Content */
 .main-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    padding: 10px 0;
+    /* No need for min-height or align-items tricks */
 }
 
+/* Card */
 .card {
     background-color: var(--bg-card);
-    /* Glassmorphism effect */
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 var(--shadow-color);
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
     padding: 30px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Space between sections */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    gap: 25px;
+    /* Margin for spacing from bottom/top if scrolled */
+    margin: 20px 0;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px 0 var(--shadow-color);
-}
+/* --- Existing Styles for Verse and Content Sections --- */
+/* (Keep all the styles for .verse-section, .content-section, .translation, etc. as before) */
 
-/* Verse Section */
 .verse-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 15px; /* Space between Arabic text and reference */
+    gap: 15px;
+    flex-shrink: 0;
 }
 
 .verse-display {
     width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px 0;
 }
 
 .verse-text {
-    font-family: 'Scheherazade New', serif; /* Specific font for Arabic */
-    font-size: clamp(2rem, 4.5vw + 1rem, 3.2rem);
+    font-family: 'Scheherazade New', serif;
+    font-size: clamp(1.8rem, 4vw + 1rem, 3.5rem);
     font-weight: 500;
-    line-height: 1.9;
+    line-height: 1.8;
     margin: 0;
-    padding: 0 10px;
+    padding: 0 15px;
     transition: opacity 0.3s ease-in-out;
     opacity: 1;
     color: var(--text-primary);
@@ -166,72 +126,283 @@ body {
     color: var(--text-secondary);
     min-height: 1.5em;
     letter-spacing: 0.5px;
+    flex-shrink: 0;
+    padding: 5px 0;
 }
 
 .verse-reference.loading {
     opacity: 0.7;
 }
 
-/* Translations Grid */
-.translations-grid {
+.content-section {
     display: grid;
-    /* On larger screens, 2 columns. On smaller, 1 column. */
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px; /* Space between translation blocks */
+    gap: 25px;
     width: 100%;
+    flex-shrink: 0;
+    padding: 5px 0 10px 0;
 }
 
-.translation {
+.translation.english {
     text-align: center;
-    padding: 15px 10px;
-    border-radius: 12px;
-    background-color: rgba(0, 0, 0, 0.02); /* Subtle background */
-    transition: background-color 0.3s ease;
+    padding: 15px;
+    border-radius: 16px;
+    background-color: var(--player-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
 }
 
-[data-theme="dark"] .translation {
-    background-color: rgba(255, 255, 255, 0.03);
+[data-theme="dark"] .translation.english {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.translation.english:hover {
+    transform: translateY(-2px);
 }
 
 .translation-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: var(--accent-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
+    flex-shrink: 0;
 }
 
 .translation-text {
-    font-family: 'Inter', sans-serif; /* Default for English */
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
     margin: 0;
     color: var(--text-primary);
     transition: opacity 0.3s ease-in-out;
     opacity: 1;
+    overflow-y: auto;
+    flex-grow: 1;
+    text-align: left;
+    padding: 0 5px;
 }
 
 .translation-text.loading {
     opacity: 0.5;
 }
 
-/* Specific styles for Bengali text */
-.translation.bengali .translation-text {
-    font-family: 'Hind Siliguri', sans-serif; /* Specific font for Bengali */
-    font-size: 1.05rem; /* Adjust size if needed */
+/* --- Audio Section & Custom Player --- */
+.audio-section {
+    text-align: center;
+    padding: 15px;
+    border-radius: 16px;
+    background-color: var(--player-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
 }
 
-/* Refresh Button */
-.btn-refresh {
-    align-self: center; /* Center the button horizontally within the card */
+[data-theme="dark"] .audio-section {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.audio-section:hover {
+    transform: translateY(-2px);
+}
+
+.audio-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 15px; /* More space below title */
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+/* Custom Audio Player */
+.custom-audio-player {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between control rows */
+    width: 100%;
+}
+
+/* Player Controls Row */
+.player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.player-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.player-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .player-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.player-btn.main-control {
+    background-color: var(--button-bg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+}
+
+.player-btn.main-control:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+/* Progress Bar Row */
+.player-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.time {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    min-width: 35px; /* Consistent width for time labels */
+    text-align: center;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--player-progress-bg);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--player-progress-fill);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.progress-bar::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--player-progress-fill);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.progress-bar::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background-color: var(--accent-primary);
+}
+
+.progress-bar::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background-color: var(--accent-primary);
+}
+
+/* Volume Control Row */
+.player-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.volume-slider {
+    flex-grow: 1;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--player-progress-bg);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--player-progress-fill);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--player-progress-fill);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background-color: var(--accent-primary);
+}
+
+.volume-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background-color: var(--accent-primary);
+}
+
+
+/* --- Actions (Buttons) --- */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-shrink: 0;
+    padding-top: 15px;
+}
+
+.btn-action {
     background-color: var(--button-bg);
     color: var(--text-primary);
-    border: 1px solid var(--border-color);
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 55px;
+    height: 55px;
+    font-size: 1.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -239,70 +410,65 @@ body {
     align-items: center;
     padding: 0;
     flex-shrink: 0;
-    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
-.btn-refresh:hover {
+.btn-action:hover {
     background-color: var(--button-hover-bg);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px var(--shadow-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-refresh:active {
+.btn-action:active {
     background-color: var(--button-bg);
     transform: translateY(0) scale(0.96);
-    box-shadow: 0 1px 3px var(--shadow-color);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .app-header {
-        padding: 12px 5px;
-        margin-bottom: 5px;
-    }
-
-    .app-title {
-        font-size: 1.8rem;
+    body {
+        padding: 15px;
     }
 
     .card {
         padding: 25px 20px;
+        border-radius: 20px;
         gap: 20px;
     }
 
     .verse-text {
-        font-size: clamp(1.7rem, 5vw, 2.7rem);
-        line-height: 1.8;
-        padding: 0 5px;
+        font-size: clamp(1.5rem, 5vw, 2.8rem);
+        padding: 0 10px;
+        line-height: 1.75;
     }
 
-    .verse-reference {
-        font-size: 1rem;
-    }
-
-    .translations-grid {
+    .content-section {
         gap: 20px;
     }
 
-    .translation {
-        padding: 12px 8px;
-    }
-
-    .translation-title {
+    .translation-text {
         font-size: 0.9rem;
-        margin-bottom: 10px;
+        line-height: 1.65;
     }
 
-    .translation-text,
-    .translation.bengali .translation-text {
-        font-size: 1rem;
-        line-height: 1.55;
+    .player-controls {
+        gap: 15px;
     }
 
-    .btn-refresh {
-        width: 55px;
-        height: 55px;
-        font-size: 1.4rem;
+    .player-btn.main-control {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+
+    .actions {
+        gap: 20px;
+    }
+
+    .btn-action {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
     }
 }
 
@@ -311,51 +477,71 @@ body {
         padding: 10px;
     }
 
-    .app-title {
-        font-size: 1.6rem;
-    }
-
-    .theme-toggle {
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
-    }
-
     .card {
         padding: 20px 15px;
+        border-radius: 18px;
         gap: 18px;
-        border-radius: 16px;
     }
 
     .verse-text {
-        font-size: clamp(1.5rem, 6vw, 2.4rem);
+        font-size: clamp(1.3rem, 6vw, 2.4rem);
+        line-height: 1.7;
     }
 
-    .translations-grid {
-        /* Stack on very small screens */
+    .verse-reference {
+        font-size: 1rem;
+    }
+
+    .content-section {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 15px;
     }
 
-    .translation-title {
+    .translation-title,
+    .audio-title {
+        font-size: 0.8rem;
+    }
+
+    .translation-text {
         font-size: 0.85rem;
+        line-height: 1.6;
     }
 
-    .translation-text,
-    .translation.bengali .translation-text {
-        font-size: 0.95rem;
+    .player-controls {
+        gap: 12px;
     }
 
-    .btn-refresh {
-        width: 50px;
-        height: 50px;
-        font-size: 1.3rem;
+    .player-btn {
+        font-size: 1rem;
+        width: 35px;
+        height: 35px;
+    }
+
+    .player-btn.main-control {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .time {
+        font-size: 0.7rem;
+        min-width: 30px;
+    }
+
+    .actions {
+        gap: 15px;
+    }
+
+    .btn-action {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
     }
 }
 
 /* Focus Styles for Accessibility */
-.btn-refresh:focus,
-.theme-toggle:focus {
+.btn-action:focus,
+.player-btn:focus {
     outline: 2px dashed var(--accent-primary);
     outline-offset: 2px;
 }
